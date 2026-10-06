@@ -1,0 +1,28 @@
+{
+  "name": "codealpha-ecommerce-store",
+  "version": "1.0.0",
+  "description": "CodeAlpha Task 1: Full-stack E-commerce Store with Auth, Catalog, Cart, and Order Processing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js",
+    "reset": "node -e \"require('node:fs').rmSync('ecommerce.db',{force:true});require('node:fs').rmSync('ecommerce.db-shm',{force:true});require('node:fs').rmSync('ecommerce.db-wal',{force:true});console.log('Database reset. It will be recreated on next start.');\"",
+    "test": "node ../test_full_suite.js",
+    "test:edge": "node ../test_edge_cases.js",
+    "test:regression": "node ../test_regression.js",
+    "test:dom": "node ../test_dom_integrity.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "fullstack",
+    "express",
+    "sqlite",
+    "javascript"
+  ],
+  "author": "CodeAlpha Intern",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.22.3"
+  }
+}

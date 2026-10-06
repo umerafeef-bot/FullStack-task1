@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlphaStore — Modern Full-Stack E-Commerce Experience</title>
+  <meta name="description" content="CodeAlpha Task 1: Complete full-stack e-commerce store with authentication, catalog, shopping cart, and order processing.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-theme="dark">
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="announcement-content">
+      <span>✨ <strong>SUMMER SPECIAL:</strong> Get 10% OFF all items with code <code class="coupon-chip" id="copy-coupon-btn" title="Click to copy">ALPHA10</code> | Free shipping on orders over $100</span>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-logo" id="brand-logo">
+        <div class="logo-icon">
+          <i data-lucide="zap"></i>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">ALPHA<span class="gradient-text">STORE</span></span>
+          <span class="badge-tag">CodeAlpha Task 1</span>
+        </div>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="nav-search-wrapper">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" id="search-input" placeholder="Search gadgets, audio, wearables..." autocomplete="off">
+        <button id="clear-search-btn" class="clear-search-btn" style="display:none;" title="Clear search">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle-btn" class="icon-btn" title="Toggle Light/Dark Theme">
+          <i data-lucide="sun" class="sun-icon"></i>
+          <i data-lucide="moon" class="moon-icon"></i>
+        </button>
+
+        <!-- User Auth Button / Profile Dropdown -->
+        <div class="auth-wrapper" id="auth-wrapper">
+          <button id="auth-btn" class="btn btn-outline nav-auth-btn">
+            <i data-lucide="user"></i>
+            <span>Sign In</span>
+          </button>
+          <!-- User Dropdown Menu -->
+          <div id="user-menu" class="user-menu" style="display: none;">
+            <div class="user-menu-header">
+              <img id="user-avatar" src="" alt="Avatar" class="avatar-sm">
+              <div class="user-info">
+                <span id="user-name" class="user-name">User</span>
+                <span id="user-email" class="user-email">email@test.com</span>
+              </div>
+            </div>
+            <div class="user-menu-divider"></div>
+            <button id="nav-orders-btn" class="menu-item-btn">
+              <i data-lucide="package"></i>
+              <span>My Orders</span>
+            </button>
+            <button id="nav-logout-btn" class="menu-item-btn text-danger">
+              <i data-lucide="log-out"></i>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cross-task link to Task 2 Social Media -->
+        <a href="http://localhost:5001" class="btn btn-outline nav-cross-btn" title="Switch to Task 2: PulseSocial Platform">
+          <i data-lucide="radio"></i>
+          <span>Task 2: PulseSocial</span>
+        </a>
+
+        <!-- Mobile Search Toggle -->
+        <button id="mobile-search-toggle-btn" class="icon-btn mobile-search-trigger" title="Toggle Search">
+          <i data-lucide="search"></i>
+        </button>
+
+        <!-- Cart Button -->
+        <button id="cart-toggle-btn" class="btn btn-primary cart-trigger-btn" title="Open Shopping Cart">
+          <i data-lucide="shopping-bag"></i>
+          <span class="cart-label">Cart</span>
+          <span id="cart-badge" class="cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Search -->
+    <div id="mobile-search-drawer" class="mobile-search-drawer" style="display: none;">
+      <div class="mobile-search-inner">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" id="mobile-search-input" placeholder="Search catalog..." autocomplete="off">
+        <button id="clear-mobile-search-btn" class="clear-search-btn" style="display: none;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-glow"></div>
+    <div class="hero-container">
+      <div class="hero-content">
+        <span class="hero-pill">
+          <i data-lucide="sparkles"></i> 2026 Premium Collection
+        </span>
+        <h1 class="hero-heading">Elevate Your Tech & Lifestyle with <span class="gradient-text">AlphaStore</span></h1>
+        <p class="hero-subtext">Engineered for quality, designed for performance. Discover cutting-edge headphones, mechanical gear, and productivity accessories.</p>
+        <div class="hero-cta-group">
+          <a href="#catalog-section" class="btn btn-primary btn-lg">
+            <span>Explore Catalog</span>
+            <i data-lucide="arrow-right"></i>
+          </a>
+          <button id="hero-quick-demo-btn" class="btn btn-glass btn-lg">
+            <i data-lucide="shield-check"></i>
+            <span>Demo Account</span>
+          </button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-num">4.9/5</span>
+          <span class="stat-label">Customer Rating</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Secure Checkout</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">2-Day</span>
+          <span class="stat-label">Fast Shipping</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catalog & Store Main Section -->
+  <main class="main-content" id="catalog-section">
+    <!-- Category & Filter Toolbar -->
+    <div class="catalog-header">
+      <div class="categories-bar" id="categories-bar">
+        <!-- Dynamically rendered category pills -->
+        <button class="category-pill active" data-category="All">All Items</button>
+      </div>
+
+      <div class="catalog-controls">
+        <div class="sort-selector">
+          <label for="sort-select"><i data-lucide="sliders-horizontal"></i> Sort:</label>
+          <select id="sort-select">
+            <option value="featured">Featured</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Results Meta -->
+    <div class="catalog-meta">
+      <span id="results-count" class="results-count">Loading products...</span>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="product-grid" class="product-grid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <div class="logo-icon"><i data-lucide="zap"></i></div>
+          <span class="logo-title">ALPHA<span class="gradient-text">STORE</span></span>
+        </div>
+        <p>Built for CodeAlpha Full Stack Internship Program. Featuring Node.js, Express, SQLite, and Vanilla JS.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Task Requirements</h4>
+        <ul>
+          <li>✔ User Registration & Login (JWT Auth)</li>
+          <li>✔ Product Catalog & Details Modal</li>
+          <li>✔ Real-Time Shopping Cart with Promo Codes</li>
+          <li>✔ Complete Order Processing & Database Tracking</li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 CodeAlpha Internship. Task 1: Simple E-commerce Store.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS & DRAWERS ==================== -->
+
+  <!-- Slide-out Cart Drawer -->
+  <div id="cart-drawer-overlay" class="drawer-overlay"></div>
+  <aside id="cart-drawer" class="cart-drawer" aria-label="Shopping Cart">
+    <div class="drawer-header">
+      <div class="drawer-title">
+        <i data-lucide="shopping-bag"></i>
+        <h3>Your Cart (<span id="cart-count-title">0</span>)</h3>
+      </div>
+      <button id="close-cart-btn" class="icon-btn" title="Close cart">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+
+    <!-- Free Shipping Progress -->
+    <div class="shipping-progress-box">
+      <div class="shipping-text" id="shipping-progress-text">Add $100.00 for FREE Shipping!</div>
+      <div class="progress-track">
+        <div id="shipping-progress-bar" class="progress-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Cart Items Scrollable List -->
+    <div id="cart-items-container" class="cart-items-container">
+      <!-- Items dynamically populated -->
+    </div>
+
+    <!-- Cart Summary Footer -->
+    <div class="drawer-footer">
+      <!-- Coupon Section -->
+      <div class="coupon-section">
+        <div class="coupon-input-group">
+          <input type="text" id="coupon-input" placeholder="Promo code (e.g. ALPHA10)" uppercase>
+          <button id="apply-coupon-btn" class="btn btn-outline btn-sm">Apply</button>
+        </div>
+        <div id="coupon-message" class="coupon-message"></div>
+      </div>
+
+      <div class="cart-breakdown">
+        <div class="breakdown-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">$0.00</span>
+        </div>
+        <div class="breakdown-row text-success" id="discount-row" style="display: none;">
+          <span>Discount (10%)</span>
+          <span id="cart-discount">-$0.00</span>
+        </div>
+        <div class="breakdown-row">
+          <span>Est. Tax (8%)</span>
+          <span id="cart-tax">$0.00</span>
+        </div>
+        <div class="breakdown-row">
+          <span>Shipping</span>
+          <span id="cart-shipping">$9.99</span>
+        </div>
+        <div class="breakdown-divider"></div>
+        <div class="breakdown-row total-row">
+          <span>Total</span>
+          <span id="cart-total" class="gradient-text">$0.00</span>
+        </div>
+      </div>
+
+      <button id="checkout-btn" class="btn btn-primary btn-block btn-lg" disabled>
+        <span>Proceed to Checkout</span>
+        <i data-lucide="credit-card"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Product Details Modal -->
+  <div id="product-modal-backdrop" class="modal-backdrop">
+    <div class="modal product-modal" id="product-modal">
+      <button class="modal-close-btn" id="close-product-modal-btn">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="product-modal-body" id="product-modal-content">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkout-modal-backdrop" class="modal-backdrop">
+    <div class="modal checkout-modal">
+      <button class="modal-close-btn" id="close-checkout-modal-btn">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="checkout-header">
+        <div class="checkout-step-indicator">
+          <div class="step-bubble active">1</div>
+          <div class="step-line"></div>
+          <div class="step-bubble active">2</div>
+          <div class="step-line"></div>
+          <div class="step-bubble active">3</div>
+        </div>
+        <h2>Secure Order Checkout</h2>
+        <p>Complete your shipping and payment details below to place your order.</p>
+      </div>
+
+      <form id="checkout-form" class="checkout-form">
+        <div class="checkout-columns">
+          <!-- Shipping Information -->
+          <div class="checkout-col">
+            <h3><i data-lucide="map-pin"></i> Shipping Address</h3>
+            <div class="form-group">
+              <label for="checkout-name">Full Name *</label>
+              <input type="text" id="checkout-name" required placeholder="John Doe">
+            </div>
+            <div class="form-group">
+              <label for="checkout-email">Email Address *</label>
+              <input type="email" id="checkout-email" required placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+              <label for="checkout-address">Street Address *</label>
+              <input type="text" id="checkout-address" required placeholder="123 Innovation Way, Suite 400">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="checkout-city">City *</label>
+                <input type="text" id="checkout-city" required placeholder="San Francisco">
+              </div>
+              <div class="form-group">
+                <label for="checkout-zip">Postal Code *</label>
+                <input type="text" id="checkout-zip" required placeholder="94107">
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Details -->
+          <div class="checkout-col">
+            <h3><i data-lucide="credit-card"></i> Payment Method</h3>
+            <div class="payment-tabs">
+              <label class="payment-option selected">
+                <input type="radio" name="paymentMethod" value="Credit Card" checked>
+                <span>Credit / Debit Card</span>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="paymentMethod" value="Cash On Delivery">
+                <span>Cash On Delivery</span>
+              </label>
+            </div>
+
+            <div id="card-inputs-group">
+              <div class="form-group">
+                <label for="card-number">Card Number</label>
+                <input type="text" id="card-number" placeholder="4532 •••• •••• 8829" maxlength="19">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="card-expiry">Expiry Date</label>
+                  <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5">
+                </div>
+                <div class="form-group">
+                  <label for="card-cvv">CVV</label>
+                  <input type="password" id="card-cvv" placeholder="•••" maxlength="4">
+                </div>
+              </div>
+            </div>
+
+            <!-- Order Summary Box -->
+            <div class="checkout-summary-box">
+              <h4>Order Summary</h4>
+              <div class="summary-line">
+                <span>Items Subtotal:</span>
+                <span id="co-subtotal">$0.00</span>
+              </div>
+              <div class="summary-line text-success" id="co-discount-line" style="display:none;">
+                <span>Coupon Discount:</span>
+                <span id="co-discount">-$0.00</span>
+              </div>
+              <div class="summary-line">
+                <span>Tax & Shipping:</span>
+                <span id="co-tax-shipping">$0.00</span>
+              </div>
+              <div class="summary-line total-bold">
+                <span>Total Amount:</span>
+                <span id="co-total" class="gradient-text">$0.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-actions">
+          <button type="button" id="cancel-checkout-btn" class="btn btn-outline">Back to Cart</button>
+          <button type="submit" id="place-order-submit-btn" class="btn btn-primary btn-lg">
+            <span id="place-order-spinner" class="spinner" style="display:none;"></span>
+            <span>Confirm & Place Order</span>
+            <i data-lucide="check-circle-2"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Order Confirmation Success Modal -->
+  <div id="order-success-modal-backdrop" class="modal-backdrop">
+    <div class="modal order-success-modal">
+      <div class="success-icon-badge">
+        <i data-lucide="check"></i>
+      </div>
+      <h2>Order Placed Successfully!</h2>
+      <p class="success-subtitle">Thank you for your purchase. We have received your order and are preparing it for shipment.</p>
+      
+      <div class="order-receipt-card" id="order-receipt-card">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="order-success-actions">
+        <button id="continue-shopping-btn" class="btn btn-primary btn-lg">Continue Shopping</button>
+        <button id="view-order-history-btn" class="btn btn-outline btn-lg">View Order in Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Modal (Login / Register) -->
+  <div id="auth-modal-backdrop" class="modal-backdrop">
+    <div class="modal auth-modal">
+      <button class="modal-close-btn" id="close-auth-modal-btn">
+        <i data-lucide="x"></i>
+      </button>
+
+      <div class="auth-tabs">
+        <button id="tab-login" class="auth-tab-btn active">Sign In</button>
+        <button id="tab-register" class="auth-tab-btn">Create Account</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="auth-form">
+        <div class="auth-header">
+          <h3>Welcome Back</h3>
+          <p>Sign in with your email to access your saved orders & cart.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" required placeholder="demo@codealpha.com">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required placeholder="password123">
+        </div>
+
+        <div class="quick-credentials-box">
+          <small>⚡ <strong>Quick Demo:</strong> demo@codealpha.com / password123</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register-form" class="auth-form" style="display: none;">
+        <div class="auth-header">
+          <h3>Join AlphaStore</h3>
+          <p>Create an account to track your orders and enjoy member deals.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" required placeholder="Jane Doe">
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" required placeholder="jane@example.com">
+        </div>
+        <div class="form-group">
+          <label for="reg-password">Password (min 6 characters)</label>
+          <input type="password" id="reg-password" minlength="6" required placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Orders History Modal -->
+  <div id="orders-modal-backdrop" class="modal-backdrop">
+    <div class="modal orders-modal">
+      <button class="modal-close-btn" id="close-orders-modal-btn">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="orders-modal-header">
+        <i data-lucide="package-check"></i>
+        <h2>My Order History</h2>
+      </div>
+      <div id="orders-list-container" class="orders-list-container">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+  <script>
+    // Initialize Lucide icons on page load
+    lucide.createIcons();
+  </script>
+</body>
+</html>
